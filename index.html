@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Update CSS Variables with <span class="h1">JS</span></h2>
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+        <label for="blur">Blur:</label>
+        <input type="range" name="blur" min="10" max="25" value="10" data-sizing="px">
+
+        <label for="base">Base Color</label>
+        <input type="color" name="base" value="#ffc600">
+
+        <img src="https://source.unsplash.com/random/800x500">
+    </div>
+
+    <script>
+        // ATTENTION querySelectorAll ne donne pas un tableau mais un NodeList
+        // => je n'ai pas toutes les methodes natives d'un tableau (ex : map(), pop()...) sous prototype
+
+        const inputs = document.querySelectorAll(".controls input");
+        
+        function handleUpdate() {
+            const suffix = this.dataset.sizing || "";
+
+            /*--- METHODE POUR RECUPERER ET AGIR SUR DES VARIABLES CSS ---*/
+
+            // documentElement renvoie l'element racine du document => ici <html>
+            const root = document.documentElement;
+
+            // je ne peux pas recuperer des variables CSS avec style.propriete = ...
+            // je dois utiliser la methode SetProperty()
+            root.style.setProperty(`--${this.name}`, this.value + suffix);
+        }
+
+        
+        inputs.forEach(input => {
+            input.addEventListener("change", handleUpdate);
+            input.addEventListener("mousemove", handleUpdate)
+        });
+
+        
+    </script>
+</body>
+</html>
